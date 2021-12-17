@@ -2,21 +2,91 @@
 
 <head>
   <title>Stonkey</title>
-  <!-- TODO Add logo -->
-  <!-- <link rel="icon" href="logo.png" type="image/x-icon"> -->
-  <!-- Our Styles -->
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" href="stonkey.png" type="image/x-icon">
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/head.html"></insert-html>
 </head>
 
 <body>
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/menu.html"></insert-html>
   <main class="container">
-    <!-- TODO Add body -->
+    <h1>Stonkey</h1>
+    <p>Will it go <span style="color: #2f2;">up</span> or <span style="color: #f22;">down</span> kids? clicky clicky &#128521; u know what 2 do &#128515;</p>
+    <div id="inputs" class="row">
+      <div class="input-field col s12 m6 l5">
+        <input type="text" id="sym">
+        <label for="sym">Stock Symbol (e.g. SNAP)</label>
+      </div>
+      <p class="input-field range-field col s12 m6 l5">
+        What percent should be visible?
+        <input type="range" id="hint">
+      </p>
+      <div class="input-field col s12 l2">
+        <button id="play" class="btn right">Play</button>
+      </div>
+    </div>
+    <div id="dloader" class="progress center" style="display: none;">
+      <div class="indeterminate"></div>
+    </div>
+    <div id="game" style="display: none;">
+      <div style="position: relative;">
+        <svg viewbox="0 0 300 100">
+          <g style="stroke: #0001;">
+            <line x1="0" y1="10" x2="300" y2="10"></line>
+            <line x1="0" y1="20" x2="300" y2="20"></line>
+            <line x1="0" y1="30" x2="300" y2="30"></line>
+            <line x1="0" y1="40" x2="300" y2="40"></line>
+            <line x1="0" y1="50" x2="300" y2="50"></line>
+            <line x1="0" y1="60" x2="300" y2="60"></line>
+            <line x1="0" y1="70" x2="300" y2="70"></line>
+            <line x1="0" y1="80" x2="300" y2="80"></line>
+            <line x1="0" y1="90" x2="300" y2="90"></line>
+          <g>
+          <polyline id="line" points="" style="stroke: #000; fill: none;"></polyline>
+        </svg>
+        <style>.chooser {position: absolute; right: 0; cursor: pointer;}</style>
+        <div id="up" class="chooser" style="top: 0; background: #2f24; display: none;"></div>
+        <div id="down" class="chooser" style="bottom: 0; background: #f224; display: none;"></div>
+      </div>
+      <div class="progress">
+        <div id="progress" class="determinate" style="width: 0%"></div>
+      </div>
+      <p id="score"></p>
+      <a class="btn red right" href="/Stonkey">Reset</a>
+    </div>
+    <h2>How it works</h2>
+    <ul class="browser-default">
+      <li>The game picks a random month-long period in the last two years for a given stock<ul class="browser-default">
+        <li>I get my stock data from <a href="https://www.alphavantage.co/">Alpha Vantage</a></li>
+        <li>I currently use the Free API which is capped at 5 calls per minute and 500 per day</li>
+        <li>If you got a "there was an error" message I probably ran out of calls and you'll have to wait</li>
+        <li>If you want you can <a href="https://venmo.com/code?user_id=2762932203028480590">Venmo me</a> @swag31415 and I'll put it towards getting a <a href="https://www.alphavantage.co/premium/">Premium API</a></li>
+      </ul></li>
+      <li>It shows you the stock data for every day in this period in some random order. These are "rounds"<ul class="browser-default">
+        <li>There is a bar at the bottom that shows your progress</li>
+      </ul></li>
+      <li>Partway through each round, you have the option of deciding whether the stock goes up or down past that point<ul class="browser-default">
+        <li>You decide by pressing the <span style="color: #2f2;">green</span> or <span style="color: #f22;">red</span> rectangles</li>
+      </ul></li>
+      <li>If you're right you get a point! Try to get as many points as you can!</li>
+    </ul>
+    <h2>How to use</h2>
+    <ol>
+      <li>Pick a stock and type its symbol into the symbol box<ul class="browser-default">
+        <li>Use <a href="https://www.marketwatch.com/tools/quotes/lookup.asp">this tool</a> to look up the symbol for your stock</li>
+      </ul></li>
+      <li>With the percentage, slider choose how much of the stock data you want to see before deciding whether it goes up or down<ul class="browser-default">
+        <li>This is like deciding at what point in the day you want to decide about a stock as a day trader</li>
+        <li>I feel like 10am EST is a good time which corresponds to about 7%</li>
+      </ul></li>
+      <li>Press play and try to get a high score!</li>
+    </ol>
   </main>
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/foot.html"></insert-html>
   <!-- HTML Inserts -->
   <script src="https://swag31415.github.io/Portfolio/js/html_inserts.js"></script>
+  <!-- Jquery Slim -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
   <!-- Our Scripts -->
   <script src="js/main.js"></script>
 </body>
