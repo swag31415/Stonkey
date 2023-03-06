@@ -95,7 +95,8 @@ const app = createApp({
         this.round = i
         this.score += await this.play(queue[i])
       }
-      console.log(`final score is ${this.score}`)
+      this.state = 'done'
+      setInterval(createMoney, 100)
     },
     reset() {
       this.state = 'starting'
@@ -104,4 +105,14 @@ const app = createApp({
   }
 }).mount('#app')
 
-console.log(document.querySelector('#app'))
+function createMoney() {
+  const money = document.createElement('img')
+  money.src = 'stonks.png'
+  money.width = 80
+  money.classList.add('money')
+  money.style.left = Math.random() * window.innerWidth + 'px'
+  document.body.prepend(money);
+  setTimeout(() => {
+    document.body.removeChild(money)
+  }, 2000)
+}

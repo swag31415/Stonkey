@@ -123,3 +123,14 @@ div.lawd {
   text-align: center;
   text-shadow: 0 0 10px var(--neon-glow);
 }
+
+.money {
+  position: absolute;
+  animation: falling 2s infinite linear;
+  z-index: -2;
+}
+
+@keyframes falling {
+  from {top: -50px;}
+  to {top: 100%;}
+}

@@ -13,7 +13,7 @@
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/menu.html"></insert-html>
   <main id="app" class="container">
     <h1>Stonkey</h1>
-    <button :class="{btn: true, red: true, right: true, disabled: state == 'playing'}" @click="reset()" v-if="state == 'playing' || state == 'choosing'">Reset</button>
+    <button :class="{btn: true, red: true, right: true, disabled: state == 'playing'}" @click="reset()" v-if="state == 'playing' || state == 'choosing' || this.state == 'done'">Reset</button>
     <p>Will it go <span style="color: #2f2;">up</span> or <span style="color: #f22;">down</span> kids? clicky clicky &#128521; u know what 2 do &#128515;</p>
     <br>
     <div class="row starter" v-if="state == 'starting'">
@@ -32,7 +32,7 @@
     <div class="loader-container" v-if="state == 'loading'">
       <div class="loader"></div>
     </div>    
-    <div v-if="state == 'playing' || state == 'choosing'">
+    <div v-if="state == 'playing' || state == 'choosing' || state == 'done'">
       <div class="lawd">
         <svg viewbox="0 0 300 100">
           <g style="stroke: #fff2;">
