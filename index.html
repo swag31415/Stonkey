@@ -5,31 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Stonkey</title>
   <link rel="icon" href="stonkey.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/main.css">
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/head.html"></insert-html>
 </head>
 
 <body>
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/menu.html"></insert-html>
-  <main class="container">
+  <main id="app" class="container">
     <h1>Stonkey</h1>
     <p>Will it go <span style="color: #2f2;">up</span> or <span style="color: #f22;">down</span> kids? clicky clicky &#128521; u know what 2 do &#128515;</p>
-    <div id="inputs" class="row">
+    <div class="row" v-if="state == 'starting'">
       <div class="input-field col s12 m6 l5">
-        <input type="text" id="sym">
+        <input type="text" v-model="symbol">
         <label for="sym">Stock Symbol (e.g. SNAP)</label>
       </div>
       <p class="input-field range-field col s12 m6 l5">
         What percent should be visible?
-        <input type="range" id="hint">
+        <input type="range" v-model="hint">
       </p>
       <div class="input-field col s12 l2">
-        <button id="play" class="btn right">Play</button>
+        <button class="btn right" @click="start()">Play</button>
       </div>
     </div>
-    <div id="dloader" class="progress center" style="display: none;">
+    <div class="progress center" v-if="state == 'loading'">
       <div class="indeterminate"></div>
     </div>
-    <div id="game" style="display: none;">
+    <div v-if="state == 'playing' || state == 'choosing'">
       <div style="position: relative;">
         <svg viewbox="0 0 300 100">
           <g style="stroke: #0001;">
@@ -43,17 +44,16 @@
             <line x1="0" y1="80" x2="300" y2="80"></line>
             <line x1="0" y1="90" x2="300" y2="90"></line>
           <g>
-          <polyline id="line" points="" style="stroke: #000; fill: none;"></polyline>
+          <polyline :points="line_pts" style="stroke: #000; fill: none;"></polyline>
         </svg>
-        <style>.chooser {position: absolute; right: 0; cursor: pointer;}</style>
-        <div id="up" class="chooser" style="top: 0; background: #2f24; display: none;"></div>
-        <div id="down" class="chooser" style="bottom: 0; background: #f224; display: none;"></div>
+        <div class="chooser" v-if="state == 'choosing'" :style="{top: 0, background: '#2f24', width: (100 - hint) + '%', height: up_h + '%'}" @click="chf(true)"></div>
+        <div class="chooser" v-if="state == 'choosing'" :style="{bottom: 0, background: '#f224', width: (100 - hint) + '%', height: down_h + '%'}" @click="chf(false)"></div>
       </div>
       <div class="progress">
-        <div id="progress" class="determinate" style="width: 0%"></div>
+        <div class="determinate" :style="{width: (100 * (round / n_rounds)) + '%'}"></div>
       </div>
-      <p id="score"></p>
-      <a class="btn red right" href="/Stonkey">Reset</a>
+      <p v-text="'Current score: ' + score + '/' + round"></p>
+      <button class="btn red right" @click="reset()">Reset</button>
     </div>
     <h2>How it works</h2>
     <ul class="browser-default">
@@ -86,9 +86,8 @@
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/foot.html"></insert-html>
   <!-- HTML Inserts -->
   <script src="https://swag31415.github.io/Portfolio/js/html_inserts.js"></script>
-  <!-- Jquery Slim -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+  <!-- Vue.js -->
+  <script src="https://unpkg.com/vue@3.2.37/dist/vue.global.prod.js"></script>
   <!-- Our Scripts -->
   <script src="js/main.js"></script>
 </body>
