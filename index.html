@@ -13,27 +13,29 @@
   <insert-html link="https://swag31415.github.io/Portfolio/inserts/menu.html"></insert-html>
   <main id="app" class="container">
     <h1>Stonkey</h1>
+    <button :class="{btn: true, red: true, right: true, disabled: state == 'playing'}" @click="reset()" v-if="state == 'playing' || state == 'choosing'">Reset</button>
     <p>Will it go <span style="color: #2f2;">up</span> or <span style="color: #f22;">down</span> kids? clicky clicky &#128521; u know what 2 do &#128515;</p>
-    <div class="row" v-if="state == 'starting'">
+    <br>
+    <div class="row starter" v-if="state == 'starting'">
       <div class="input-field col s12 m6 l5">
+        <label>Stock Symbol (e.g. SNAP)</label>
         <input type="text" v-model="symbol">
-        <label for="sym">Stock Symbol (e.g. SNAP)</label>
       </div>
       <p class="input-field range-field col s12 m6 l5">
         What percent should be visible?
         <input type="range" v-model="hint">
       </p>
       <div class="input-field col s12 l2">
-        <button class="btn right" @click="start()">Play</button>
+        <button class="btn green right flashy" @click="start()">Play</button>
       </div>
     </div>
-    <div class="progress center" v-if="state == 'loading'">
-      <div class="indeterminate"></div>
-    </div>
+    <div class="loader-container" v-if="state == 'loading'">
+      <div class="loader"></div>
+    </div>    
     <div v-if="state == 'playing' || state == 'choosing'">
-      <div style="position: relative;">
+      <div class="lawd">
         <svg viewbox="0 0 300 100">
-          <g style="stroke: #0001;">
+          <g style="stroke: #fff2;">
             <line x1="0" y1="10" x2="300" y2="10"></line>
             <line x1="0" y1="20" x2="300" y2="20"></line>
             <line x1="0" y1="30" x2="300" y2="30"></line>
@@ -44,6 +46,7 @@
             <line x1="0" y1="80" x2="300" y2="80"></line>
             <line x1="0" y1="90" x2="300" y2="90"></line>
           <g>
+          <polyline :points="line_pts" style="stroke: #0ff; fill: none; stroke-width: 2;"></polyline>
           <polyline :points="line_pts" style="stroke: #000; fill: none;"></polyline>
         </svg>
         <div class="chooser" v-if="state == 'choosing'" :style="{top: 0, background: '#2f24', width: (100 - hint) + '%', height: up_h + '%'}" @click="chf(true)"></div>
@@ -52,8 +55,16 @@
       <div class="progress">
         <div class="determinate" :style="{width: (100 * (round / n_rounds)) + '%'}"></div>
       </div>
-      <p v-text="'Current score: ' + score + '/' + round"></p>
-      <button class="btn red right" @click="reset()">Reset</button>
+      <div class="counter-container">
+        <div class="counter">
+          <div class="label">Round</div>
+          <div class="value" v-text="round"></div>
+        </div>
+        <div class="counter">
+          <div class="label">Score</div>
+          <div class="value" v-text="score"></div>
+        </div>
+      </div>
     </div>
     <h2>How it works</h2>
     <ul class="browser-default">
