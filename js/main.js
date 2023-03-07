@@ -28,7 +28,8 @@ const app = createApp({
       down_h: 50,
       up_h: 50,
       chf: () => true,
-      line_pts: ""
+      line_pts: "",
+      phrases: {},
     }
   },
   methods: {
@@ -94,19 +95,25 @@ const app = createApp({
       let dict = {}
       try {
         dict = await this.get_data(this.symbol)
+        this.phrases = await fetch('phrases.json').then(res => res.json())
       } catch (err) {
         console.error(err)
         M.toast({html: 'GOLLY GOSH WE RAN INTO AN ERROR', classes: 'red'})
         this.reset()
         return;
       }
+      this.shuffle_arr(this.phrases.winning)
+      this.shuffle_arr(this.phrases.losing)
       let queue = Object.values(dict)
       this.shuffle_arr(queue)
       this.state = 'playing'
       this.n_rounds = queue.length
       for (let i = 0; i < this.n_rounds; i++) {
         this.round = i
-        this.score += await this.play(queue[i])
+        if (await this.play(queue[i])) {
+          this.score += 1
+          M.toast({html: this.phrases.winning[i], classes: 'light-green'})
+        } else M.toast({html: this.phrases.losing[i], classes: 'pink'})
       }
       this.state = 'done'
       this.pid = setInterval(create_money, 100)
