@@ -2,6 +2,18 @@ const line = document.getElementById("line")
 const [width, height] = [300, 100]
 const pad = 10
 
+function create_money() {
+  const money = document.createElement('img')
+  money.src = 'stonks.png'
+  money.width = 80
+  money.classList.add('money')
+  money.style.left = Math.random() * window.innerWidth + 'px'
+  document.body.prepend(money);
+  setTimeout(() => {
+    document.body.removeChild(money)
+  }, 2000)
+}
+
 const { createApp } = Vue
 const app = createApp({
   data() {
@@ -84,7 +96,8 @@ const app = createApp({
         dict = await this.get_data(this.symbol)
       } catch (err) {
         console.error(err)
-        alert("there was an error")
+        M.toast({html: 'GOLLY GOSH WE RAN INTO AN ERROR', classes: 'red'})
+        this.reset()
         return;
       }
       let queue = Object.values(dict)
@@ -96,23 +109,12 @@ const app = createApp({
         this.score += await this.play(queue[i])
       }
       this.state = 'done'
-      setInterval(createMoney, 100)
+      this.pid = setInterval(create_money, 100)
     },
     reset() {
       this.state = 'starting'
       this.score = 0
+      if (this.pid) clearInterval(this.pid)
     }
   }
 }).mount('#app')
-
-function createMoney() {
-  const money = document.createElement('img')
-  money.src = 'stonks.png'
-  money.width = 80
-  money.classList.add('money')
-  money.style.left = Math.random() * window.innerWidth + 'px'
-  document.body.prepend(money);
-  setTimeout(() => {
-    document.body.removeChild(money)
-  }, 2000)
-}
